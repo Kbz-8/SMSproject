@@ -2,13 +2,15 @@
 #define __SMS_MANAGER__
 
 #include <wiringPi.h>
-#include <wiringSerial.h>
-#include <stdio.h>
-#include <unistd.h>
-#include <string.h>
+#include <wiringSerial.h> // Serial communication
+#include <stdio.h> // printf(); scanf()...
+#include <unistd.h> // sleep()
+#include <string.h> // strcpy(); strcat()...
+
+#define ctrl_z "\x1a"
 
 void initSMSmanager(int port);
 void sendSMS(const int port, const char* num, const char* message);
-const char* getSMS(int port);
+char* getSMS(int port);
 
 #endif // __SMS_MANAGER__

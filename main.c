@@ -7,6 +7,7 @@
 /*=================================================*/
 
 #include "src/smsManager.h"
+#include <curses.h> // wgetch(); nodelay()...
 
 int main(int argc, char *argv[])
 {	
@@ -22,7 +23,8 @@ int main(int argc, char *argv[])
     
 	initSMSmanager(port);
 	sendSMS(port, "0766614647", "j'aime les pommes");
-	getSMS(port);
+	char* test = getSMS(port);
+	printf("%s", test);
 
     serialClose(port);
 	
