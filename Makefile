@@ -7,7 +7,7 @@ ifeq ($(DEBUG),yes)
 else
 	CXXFLAGS = -Wall
 endif
-LIBS = -lwiringPi -lncursesw
+LIBS = -lwiringPi
 
 OBJ = obj/main.o obj/smsManager.o
 EXE = app # App name

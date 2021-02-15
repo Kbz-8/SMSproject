@@ -3,11 +3,10 @@
 //
 // AUTHOR: Malo DAVID <bilbo.sacquet@orange.fr
 // CREATED: 02/02/2021
-// UPDATED: 11/02/2021
+// UPDATED: 15/02/2021
 /*=================================================*/
 
 #include "src/smsManager.h"
-#include <curses.h> // wgetch(); nodelay()...
 
 int main(int argc, char *argv[])
 {	
@@ -22,9 +21,11 @@ int main(int argc, char *argv[])
     }
     
 	initSMSmanager(port);
-	sendSMS(port, "0766614647", "j'aime les pommes");
+	sendSMS(port, "0782509304", "test");
+	sleep(5);
 	char* test = getSMS(port);
-	printf("%s", test);
+	printf("\n%s\n", test);
+	free(test);
 
     serialClose(port);
 	

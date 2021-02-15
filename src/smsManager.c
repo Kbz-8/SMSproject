@@ -11,7 +11,7 @@ void printfCharSerial(int port) // Function to print what is available on the se
 
 void initSMSmanager(int port)
 {
-	serialPuts(port, "AT+CPIN=5132\r"); // Get SIM card
+	serialPuts(port, "AT+CPIN=1234\r"); // Get SIM card
 	sleep(1);
 	printfCharSerial(port);
 
@@ -47,13 +47,13 @@ char* getSMS(int port)
 	serialPuts(port, "AT+CNMI=1,2,0,0,0\r"); // Decides how newly arrived SMS messages should be handled
 	serialPuts(port, "AT+CMGL=\"ALL\"\r");
 	sleep(1);
-	char* str;
-	char tempo;
-	while(serialDataAvail(port))
+	char* buffer = malloc(sizeof(char) * 255);
+	strcpy(buffer, "NEW SMS:");
+	for(int i = 8; serialDataAvail(port) || i < 256; i++)
 	{
-		tempo = serialGetchar(port);
-		strcat(str, &tempo);
+		buffer[i] = serialGetchar(port);
 	}
-	serialPuts(port, "AT+CMDA=\"DEL READ\"\r");
-	return str;
+	serialPuts(port, "AT+CMDA=4\r");
+	sleep(1);
+	return buffer;
 }
