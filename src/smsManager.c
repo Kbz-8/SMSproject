@@ -45,7 +45,7 @@ void sendSMS(const int port, const char* num, const char* message)
 char* getSMS(int port)
 {
 	serialPuts(port, "AT+CNMI=1,2,0,0,0\r"); // Decides how newly arrived SMS messages should be handled
-	serialPuts(port, "AT+CMGL=\"ALL\"\r");
+	serialPuts(port, "AT+CMGL=\"REC UNREAD\"\r");
 	sleep(1);
 	char* buffer = malloc(sizeof(char) * 255);
 	strcpy(buffer, "NEW SMS:");
