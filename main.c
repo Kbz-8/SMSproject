@@ -3,7 +3,7 @@
 //
 // AUTHOR: Malo DAVID <bilbo.sacquet@orange.fr
 // CREATED: 02/02/2021
-// UPDATED: 16/02/2021
+// UPDATED: 21/02/2021
 /*=================================================*/
 
 #include "src/smsManager.h"

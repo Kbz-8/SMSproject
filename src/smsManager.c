@@ -45,15 +45,23 @@ void sendSMS(const int port, const char* num, const char* message)
 char* getSMS(int port)
 {
 	serialPuts(port, "AT+CNMI=1,2,0,0,0\r"); // Decides how newly arrived SMS messages should be handled
-	serialPuts(port, "AT+CMGL=\"REC UNREAD\"\r");
+	sleep(1);
+	serialPuts(port, "AT+CMGL=\"REC UNREAD\"\r"); // Get unread sms
 	sleep(1);
 	char* buffer = malloc(sizeof(char) * 255);
 	strcpy(buffer, "NEW SMS:");
-	for(int i = 8; serialDataAvail(port) || i < 256; i++)
+	bool isOnBody = false;
+	for(int i = 8; serialDataAvail(port) && i < 256; i = i)
 	{
-		buffer[i] = serialGetchar(port);
+		//if((char)serialGetchar(port) == '\n')
+			isOnBody = true;
+		if(isOnBody)
+		{
+			buffer[i] = serialGetchar(port);
+			i++;
+		}
 	}
-	serialPuts(port, "AT+CMDA=4\r");
+	serialPuts(port, "AT+CMDA=\"DEL READ\"\r"); // Delete read sms
 	sleep(1);
 	return buffer;
 }

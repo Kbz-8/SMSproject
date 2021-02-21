@@ -7,6 +7,8 @@
 #include <stdlib.h> // malloc()...
 #include <unistd.h> // sleep()
 #include <string.h> // strcpy(); strcat()...
+#include <stdbool.h>
+
 
 #define ctrl_z "\x1a"
 
