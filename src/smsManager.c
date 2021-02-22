@@ -18,6 +18,10 @@ void initSMSmanager(int port)
 	serialPuts(port, "AT+CMGF=1\r"); // Enable SMS sending
 	sleep(1);
 	printfCharSerial(port);
+	
+	serialPuts(port, "AT+CNMI=1,2,0,0,0\r"); // Decides how newly arrived SMS messages should be handled
+	sleep(1);
+	printfCharSerial(port);
 }
 
 void sendSMS(const int port, const char* num, const char* message)
@@ -44,24 +48,36 @@ void sendSMS(const int port, const char* num, const char* message)
 
 char* getSMS(int port)
 {
-	serialPuts(port, "AT+CNMI=1,2,0,0,0\r"); // Decides how newly arrived SMS messages should be handled
-	sleep(1);
-	serialPuts(port, "AT+CMGL=\"REC UNREAD\"\r"); // Get unread sms
-	sleep(1);
 	char* buffer = malloc(sizeof(char) * 255);
-	strcpy(buffer, "NEW SMS:");
+	char* finder = malloc(sizeof(char) * 255);
+	strcpy(buffer, "NEW SMS: ");
+	bool searchNewline = false;
 	bool isOnBody = false;
-	for(int i = 8; serialDataAvail(port) && i < 256; i = i)
+	for(int i = 9; serialDataAvail(port) && i < 255; i++)
 	{
-		//if((char)serialGetchar(port) == '\n')
-			isOnBody = true;
-		if(isOnBody)
+		buffer[i] = serialGetchar(port);
+		if(!searchNewline)
 		{
-			buffer[i] = serialGetchar(port);
-			i++;
+			finder = strstr(buffer, "+CMT");
+			if(finder != NULL)
+				searchNewline = true;
+		}
+		else
+		{
+			if(buffer[i] == '\n')
+				isOnBody = true;
+			if(isOnBody)
+			{
+				for(int j = 9; j < strlen(buffer); j++)
+					buffer[j] = "";
+				i = 9;
+				searchNewline = false;
+			}
 		}
 	}
-	serialPuts(port, "AT+CMDA=\"DEL READ\"\r"); // Delete read sms
+	free(finder);
+	serialPuts(port, "AT+CMDA=\"DEL ALL\"\r"); // Delete read sms
 	sleep(1);
+	printfCharSerial(port);
 	return buffer;
 }

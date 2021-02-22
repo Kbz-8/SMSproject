@@ -21,10 +21,11 @@ int main(int argc, char *argv[])
     }
     
 	initSMSmanager(port);
-	sendSMS(port, "0782509304", "test");
+	sendSMS(port, "0782509304", "j'aime les pommes");
 	sleep(5);
 	char* test = getSMS(port);
 	printf("\n%s\n", test);
+	sendSMS(port, "0766614647", test);
 	free(test);
 
     serialClose(port);
