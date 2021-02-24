@@ -21,7 +21,7 @@ int main(int argc, char *argv[])
     }
     
 	initSMSmanager(port);
-	sendSMS(port, "0782509304", "j'aime les pommes");
+	sendSMS(port, "0782509304", "j'aime les pommes test");
 	sleep(5);
 	char* test = getSMS(port);
 	printf("\n%s\n", test);

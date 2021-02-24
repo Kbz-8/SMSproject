@@ -51,32 +51,26 @@ char* getSMS(int port)
 	char* buffer = malloc(sizeof(char) * 255);
 	char* finder = malloc(sizeof(char) * 255);
 	strcpy(buffer, "NEW SMS: ");
-	bool searchNewline = false;
-	bool isOnBody = false;
+	bool isOnBody = false; // boolean used to know when the getter is on the SMS infos
 	for(int i = 9; serialDataAvail(port) && i < 255; i++)
 	{
 		buffer[i] = serialGetchar(port);
-		if(!searchNewline)
+		if(!isOnBody)
 		{
-			finder = strstr(buffer, "+CMT");
+			finder = strstr(buffer, "+CMT"); // Find +CMT
 			if(finder != NULL)
-				searchNewline = true;
+				isOnBody = true;
 		}
 		else
 		{
-			if(buffer[i] == '\n')
-				isOnBody = true;
-			if(isOnBody)
-			{
-				for(int j = 9; j < strlen(buffer); j++)
-					buffer[j] = "";
-				i = 9;
-				searchNewline = false;
-			}
+			for(int j = 9; j < (int)strlen(buffer); j++) // Clear the buffer
+				buffer[j] = "";
+			i = 9;
+			isOnBody = false;
 		}
 	}
 	free(finder);
-	serialPuts(port, "AT+CMDA=\"DEL ALL\"\r"); // Delete read sms
+	serialPuts(port, "AT+CMDA=\"DEL ALL\"\r"); // Delete all sms
 	sleep(1);
 	printfCharSerial(port);
 	return buffer;
