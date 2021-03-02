@@ -31,7 +31,6 @@ void loop(void)
 					if(strstr(finder, "break") != NULL)
 					{
 						printf("break command\n");
-						sendSMS(port, "BREAK COMMAND", "0766614647");
 						looping = false;
 						break;
 					}
