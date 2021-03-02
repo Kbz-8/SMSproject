@@ -14,10 +14,8 @@ int main(int argc, char *argv[])
 	(void)argv;
 	
 	initManager();
-
 	loop();
-
-    serialClose(port);
+    clearManager();
 	
 	return 0;
 }

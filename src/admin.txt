@@ -1,0 +1,4 @@
+/* Admin logs for admin commands, DO NOT MODIFY THIS  */
+
+user: bilbo;
+password: 11711328921924523027253222145159621667180;

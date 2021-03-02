@@ -9,7 +9,7 @@ else
 endif
 LIBS = -lwiringPi
 
-OBJ = obj/main.o obj/smsManager.o obj/manager.o
+OBJ = obj/main.o obj/smsManager.o obj/manager.o obj/md5.o
 EXE = app # App name
 
 all: $(EXE)
@@ -48,6 +48,8 @@ obj/main.o: main.c
 obj/smsManager.o: src/smsManager.c src/smsManager.h
 	$(CC) -o $@ -c $< $(CXXFLAGS)
 obj/manager.o: src/manager.c src/manager.h
+	$(CC) -o $@ -c $< $(CXXFLAGS)
+obj/md5.o: src/md5.c src/md5.h
 	$(CC) -o $@ -c $< $(CXXFLAGS)
 
 

@@ -1,4 +1,5 @@
 #include "manager.h"
+#include "md5.h"
 
 void initManager(void)
 {
@@ -13,10 +14,38 @@ void initManager(void)
 
 void loop(void)
 {
-	sendSMS(port, "0782509304", "j'aime les pommes test");
-	sleep(5);
-	char* test = getSMS(port);
-	printf("\n%s\n", test);
-	sendSMS(port, "0766614647", test);
-	free(test);
+	char* finder = malloc(sizeof(char) * 255);
+	bool looping = true;
+	while(looping)
+	{
+		getter = getSMS(port);
+		finder = strtok(getter, " ");
+		while(finder != NULL)
+		{
+			for(int i = 0; i < (int)strlen(finder); i++)
+			{
+				printf("%c\n", finder[i]);
+				if(finder[i] == *"!")
+				{
+					printf("test\n");
+					if(strstr(finder, "break") != NULL)
+					{
+						printf("break command\n");
+						sendSMS(port, "BREAK COMMAND", "0766614647");
+						looping = false;
+						break;
+					}
+				}
+			}
+			finder = strtok(NULL, " ");
+		}
+	}
+	free(finder);
+	free(getter);
+	printf("Variables liberees\n");
+}
+
+void clearManager(void)
+{
+	serialClose(port);
 }
